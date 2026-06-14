@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Card Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen p-6">
+
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900">Customize GitHub Card</h2>
+
+        <form id="cardForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">GitHub Repository URL <span class="text-red-500">*</span></label>
+                <input type="text" id="githubUrl" required placeholder="https://github.com/DylasCoding/Multiplayer2D" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <p class="text-xs text-gray-500 mt-1">Paste the full URL or just user/repo</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Theme</label>
+                    <select id="theme" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                        <optgroup label="Light Themes">
+                            <option value="light" selected>Light (Default)</option>
+                            <option value="rose">Rose</option>
+                            <option value="mint">Mint</option>
+                            <option value="sky">Sky</option>
+                            <option value="sand">Sand</option>
+                            <option value="lavender">Lavender</option>
+                        </optgroup>
+                        <optgroup label="Dark Themes">
+                            <option value="dark">Dark</option>
+                            <option value="neon">Neon</option>
+                            <option value="midnight">Midnight</option>
+                            <option value="forest">Forest</option>
+                            <option value="volcano">Volcano</option>
+                            <option value="ocean">Ocean</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Width (px)</label>
+                    <input type="number" id="width" placeholder="420" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Tags (Max 4, comma-separated)</label>
+                <input type="text" id="tags" placeholder="e.g. react, typescript, c#" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Custom Description</label>
+                <input type="text" id="desc" placeholder="Leave empty to auto-fetch from GitHub" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div class="border-t pt-4 mt-2">
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider">Custom Colors</h3>
+                </div>
+
+                <div class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <label class="block text-xs font-medium text-gray-500 mb-2">Quick  Accent Presets</label>
+                    <div class="flex flex-wrap gap-3" id="presetContainer">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Border</label>
+                        <input type="color" id="border" value="#ffffff" class="w-full h-8 cursor-pointer">
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="useBorder" class="mr-1"><span class="text-xs">Enable</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Desc Color</label>
+                        <input type="color" id="descColor" value="#000000" class="w-full h-8 cursor-pointer">
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="useDescColor" class="mr-1"><span class="text-xs">Enable</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Accent From</label>
+                        <input type="color" id="accentFrom" value="#06b6d4" class="w-full h-8 cursor-pointer">
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="useAccentFrom" class="mr-1"><span class="text-xs">Enable</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Accent To</label>
+                        <input type="color" id="accentTo" value="#0891b2" class="w-full h-8 cursor-pointer">
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="useAccentTo" class="mr-1"><span class="text-xs">Enable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900">Output & Preview</h2>
+        <div>
+            <label class="block text-sm font-bold mb-2">Live Preview</label>
+            <div class="flex justify-center bg-gray-100 p-4 rounded-lg min-h-[200px] items-center overflow-x-auto relative">
+                <img id="previewImage" src="" alt="Live Preview" class="hidden max-w-full shadow-md rounded-md transition-opacity duration-300">
+                <p id="previewPlaceholder" class="text-gray-400 italic">Paste a GitHub Repository URL to see the preview...</p>
+            </div>
+        </div>
+
+        <hr class="border-gray-200 mb-6">
+
+        <div class="space-y-5 mb-6">
+            <div>
+                <label class="block text-sm font-bold mb-1">API URL</label>
+                <div class="flex gap-2">
+                    <input type="text" id="resultUrl" readonly class="flex-1 px-3 py-2 bg-gray-50 border rounded-lg text-sm text-gray-600 font-mono focus:outline-none">
+                    <button type="button" onclick="copyText('resultUrl', this)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium whitespace-nowrap shadow-sm">
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-1">Markdown (For README.md)</label>
+                <div class="flex gap-2 items-start">
+                    <textarea id="resultMarkdown" readonly rows="4" class="flex-1 px-3 py-2 bg-gray-50 border rounded-lg text-sm text-gray-600 font-mono resize-y focus:outline-none"></textarea>
+                    <button type="button" onclick="copyText('resultMarkdown', this)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium whitespace-nowrap shadow-sm">
+                        Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    // --- 1. QUICK PRESETS CONFIGURATION ---
+    const presets = [
+        { name: 'JavaScript (Amber)', from: '#f59e0b', to: '#d97706' },
+        { name: 'TypeScript (Blue)', from: '#3b82f6', to: '#1d4ed8' },
+        { name: 'Python (Indigo)', from: '#6366f1', to: '#4338ca' },
+        { name: 'Vue/Node (Green)', from: '#10b981', to: '#047857' },
+        { name: 'Rust/Swift (Orange)', from: '#f97316', to: '#c2410c' },
+        { name: 'React/Go (Cyan)', from: '#06b6d4', to: '#0e7490' },
+        { name: 'C# (Purple)', from: '#a855f7', to: '#7e22ce' },
+        { name: 'Java/Ruby (Red)', from: '#ef4444', to: '#b91c1c' },
+        { name: 'Kotlin (Pink)', from: '#ec4899', to: '#be185d' },
+        { name: 'Dark Mode (Gray)', from: '#9ca3af', to: '#374151' }
+    ];
+
+    const presetContainer = document.getElementById('presetContainer');
+
+    presets.forEach(p => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.title = p.name;
+        btn.className = 'w-7 h-7 rounded-full shadow-sm border-2 border-white hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition-transform cursor-pointer';
+        btn.style.background = `linear-gradient(135deg, ${p.from}, ${p.to})`;
+
+        btn.onclick = () => {
+            document.getElementById('accentFrom').value = p.from;
+            document.getElementById('accentTo').value = p.to;
+
+            document.getElementById('useAccentFrom').checked = true;
+            document.getElementById('useAccentTo').checked = true;
+
+            generateCard();
+        };
+
+        presetContainer.appendChild(btn);
+    });
+
+    // --- 2. COPY TO CLIPBOARD LOGIC ---
+    function copyText(elementId, btnElement) {
+        const el = document.getElementById(elementId);
+        if (!el.value) return;
+
+        navigator.clipboard.writeText(el.value).then(() => {
+            const originalText = btnElement.innerText;
+            btnElement.innerText = "Copied!";
+            btnElement.classList.replace("bg-blue-600", "bg-emerald-500");
+            btnElement.classList.replace("hover:bg-blue-700", "hover:bg-emerald-600");
+
+            setTimeout(() => {
+                btnElement.innerText = originalText;
+                btnElement.classList.replace("bg-emerald-500", "bg-blue-600");
+                btnElement.classList.replace("hover:bg-emerald-600", "hover:bg-blue-700");
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+
+    // --- 3. URL PARSING LOGIC ---
+    function extractRepoInfo(urlInput) {
+        let cleanUrl = urlInput.trim().replace(/\/$/, '').replace(/\.git$/, '');
+        const regex = /(?:https?:\/\/github\.com\/)?([^/]+)\/([^/]+)/;
+        const match = cleanUrl.match(regex);
+
+        if (match && match[1] && match[2]) {
+            return { user: match[1], repo: match[2] };
+        }
+        return null;
+    }
+
+    // --- 4. CARD GENERATION LOGIC ---
+    const formElements = document.querySelectorAll('#cardForm input, #cardForm select');
+    const previewImage = document.getElementById('previewImage');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+    const resultUrl = document.getElementById('resultUrl');
+    const resultMarkdown = document.getElementById('resultMarkdown');
+
+    const cleanHex = (hexCode) => hexCode.replace('#', '');
+
+    function generateCard() {
+        const urlInput = document.getElementById('githubUrl').value;
+        const repoInfo = extractRepoInfo(urlInput);
+
+        if (!repoInfo) {
+            previewImage.classList.add('hidden');
+            previewPlaceholder.classList.remove('hidden');
+            resultUrl.value = '';
+            resultMarkdown.value = '';
+            return;
+        }
+
+        const { user, repo } = repoInfo;
+        const baseUrl = 'https://github-card-api-rust.vercel.app/api/card';
+        const params = new URLSearchParams();
+
+        params.append('user', user);
+        params.append('repo', repo);
+
+        const theme = document.getElementById('theme').value;
+        if (theme !== 'light') params.append('theme', theme);
+
+        const width = document.getElementById('width').value.trim();
+        if (width && width !== '420') params.append('width', width);
+
+        const tags = document.getElementById('tags').value.trim();
+        if (tags) {
+            const cleanedTags = tags.split(',').map(t => t.trim()).filter(t => t).join(',');
+            params.append('tags', cleanedTags);
+        }
+
+        const desc = document.getElementById('desc').value.trim();
+        if (desc) params.append('desc', desc);
+
+        if (document.getElementById('useBorder').checked) {
+            params.append('border', cleanHex(document.getElementById('border').value));
+        }
+        if (document.getElementById('useDescColor').checked) {
+            params.append('descColor', cleanHex(document.getElementById('descColor').value));
+        }
+        if (document.getElementById('useAccentFrom').checked) {
+            params.append('accentFrom', cleanHex(document.getElementById('accentFrom').value));
+        }
+        if (document.getElementById('useAccentTo').checked) {
+            params.append('accentTo', cleanHex(document.getElementById('accentTo').value));
+        }
+
+        const finalUrl = `${baseUrl}?${params.toString()}`;
+
+        previewPlaceholder.classList.add('hidden');
+        previewImage.src = finalUrl;
+        previewImage.classList.remove('hidden');
+
+        resultUrl.value = finalUrl;
+        resultMarkdown.value = `[![${repo}](${finalUrl})](https://github.com/${user}/${repo})`;
+    }
+
+    formElements.forEach(el => {
+        el.addEventListener('input', generateCard);
+        el.addEventListener('change', generateCard);
+    });
+</script>
+</body>
+</html>

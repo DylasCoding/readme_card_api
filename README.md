@@ -2,6 +2,29 @@
 
 > Dynamic SVG card generator for GitHub repositories — auto-fetches description & language from the GitHub API, renders a styled card with language-based accent colors.
 
+## Preview
+
+### Forest Theme
+
+[![Multiplayer2D](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&theme=forest&tags=Unity%2CC%23&accentFrom=ef4444&accentTo=b91c1c)](https://github.com/DylasCoding/Multiplayer2D)
+
+### Neon Theme
+
+[![Multiplayer2D](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&theme=neon&tags=Unity%2CC%23&accentFrom=10b981&accentTo=047857)](https://github.com/DylasCoding/Multiplayer2D)
+
+### Light Theme
+
+[![Multiplayer2D](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&tags=Unity%2CC%23&accentFrom=ef4444&accentTo=b91c1c)](https://github.com/DylasCoding/Multiplayer2D)
+
+### Side-by-side Example
+
+| Dark | Light                                                                                                                                                                                                                 |
+|-------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&tags=Unity,Netcode,C%23&theme=dark)](https://github.com/DylasCoding/Multiplayer2D) | [![Multiplayer2D](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&tags=Unity%2CC%23&accentFrom=ef4444&accentTo=b91c1c)](https://github.com/DylasCoding/Multiplayer2D)
+|
+
+---
+
 **🔗 Live endpoint:** `https://github-card-api-rust.vercel.app/api/card`
 
 ---
