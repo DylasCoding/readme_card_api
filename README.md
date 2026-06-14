@@ -1,207 +1,178 @@
-# GitHub Repository Card API
+# github-card-api
 
-Generate beautiful SVG cards for GitHub repositories.
+> Dynamic SVG card generator for GitHub repositories — auto-fetches description & language from the GitHub API, renders a styled card with language-based accent colors.
 
----
-
-## Preview
-
-### Default
-
-![Default Card](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding\&repo=Multiplayer2D)
-
-### Dark Theme
-
-![Dark Card](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding\&repo=Multiplayer2D\&theme=dark)
-
-### Unity Project
-
-![Unity Card](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding\&repo=Multiplayer2D\&theme=dark\&tags=Unity,Netcode,C%23,Firebase)
-
-### Fully Customized
-
-![Custom Card](https://github-card-api-rust.vercel.app/api/card?user=DylasCoding\&repo=Multiplayer2D\&theme=dark\&width=550\&tags=Unity,Netcode,C%23,Firebase\&border=%238b5cf6\&descColor=%2394a3b8)
+**🔗 Live endpoint:** `https://github-card-api-rust.vercel.app/api/card`
 
 ---
 
-## Usage
+## Quick Start
 
-### Markdown
+Paste this into any GitHub `README.md` to display a card for your repo:
 
-```md
-![Repository Card](https://github-card-api-rust.vercel.app/api/card?user=USERNAME&repo=REPOSITORY)
+```markdown
+![My Repo](https://github-card-api-rust.vercel.app/api/card?user=YOUR_USERNAME&repo=YOUR_REPO)
 ```
 
-### HTML
+Make it clickable:
 
-```html
-<img src="https://github-card-api-rust.vercel.app/api/card?user=USERNAME&repo=REPOSITORY" />
+```markdown
+[![My Repo](https://github-card-api-rust.vercel.app/api/card?user=YOUR_USERNAME&repo=YOUR_REPO)](https://github.com/YOUR_USERNAME/YOUR_REPO)
 ```
 
 ---
 
 ## Parameters
 
-| Parameter   | Description                  | Default                |
-| ----------- | ---------------------------- | ---------------------- |
-| `user`      | GitHub username              | `DylasCoding`          |
-| `repo`      | Repository name              | `Multiplayer2D`        |
-| `desc`      | Custom description           | Repository description |
-| `tags`      | Comma-separated tags (max 4) | None                   |
-| `theme`     | `light` or `dark`            | `light`                |
-| `border`    | Border color (HEX)           | Auto                   |
-| `descColor` | Description text color (HEX) | Auto                   |
-| `width`     | Card width in pixels         | `420`                  |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `user` | string | — | **Required.** Your GitHub username |
+| `repo` | string | — | **Required.** Repository name (case-sensitive) |
+| `theme` | string | `light` | Card color theme — see [Themes](#themes) below |
+| `tags` | string | _(none)_ | Comma-separated tech tags, max 4. e.g. `react,typescript,node` |
+| `desc` | string | _(auto)_ | Override description text. If omitted, fetched from GitHub API |
+| `width` | number | `420` | Card width in pixels |
+| `border` | hex | _(theme)_ | Override border color — without `#`, e.g. `border=30363d` |
+| `descColor` | hex | _(theme)_ | Override description text color — without `#` |
+| `accentFrom` | hex | _(auto)_ | Override accent start color (sidebar + title). Without `#`, e.g. `06b6d4` |
+| `accentTo` | hex | _(accentFrom)_ | Override accent end color for gradient. Omit for solid accent |
 
 ---
 
-## Theme
+## Themes
 
-### Light Theme
+Use `theme=<name>` to change the card appearance.
 
-```text
-/api/card?theme=light
-```
+### Dark themes
 
-### Dark Theme
+| Name | Preview |
+|------|---------|
+| `dark` | Classic GitHub dark |
+| `neon` | Deep purple with violet glow |
+| `midnight` | Navy blue with steel accents |
+| `forest` | Dark green with emerald tones |
+| `volcano` | Deep brown-red with orange accents |
+| `ocean` | Near-black with cyan highlights |
 
-```text
-/api/card?theme=dark
-```
+### Light themes
 
-Example:
+| Name | Preview |
+|------|---------|
+| `light` | Clean white (default) |
+| `rose` | Soft pink background |
+| `mint` | Fresh green-white |
+| `sky` | Light blue wash |
+| `sand` | Warm amber-yellow |
+| `lavender` | Soft purple tint |
 
-```text
-/api/card?user=DylasCoding&repo=Multiplayer2D&theme=dark
-```
+**Example:**
 
----
-
-## Custom Description
-
-Override the repository description.
-
-```text
-/api/card?desc=2D%20Multiplayer%20RPG%20Game
-```
-
-Example:
-
-```text
-/api/card?user=DylasCoding&repo=Multiplayer2D&desc=2D%20Multiplayer%20RPG%20Game
-```
-
----
-
-## Custom Tags
-
-Add technology badges below the description.
-
-Maximum: **4 tags**
-
-```text
-/api/card?tags=Unity,Netcode,C#,Firebase
-```
-
-Example:
-
-```text
-/api/card?user=DylasCoding&repo=Multiplayer2D&tags=Unity,Netcode,C#,Firebase
-```
-
-### Supported Tag Colors
-
-| Tag        | Style    |
-| ---------- | -------- |
-| Unity      | Green    |
-| Netcode    | Blue     |
-| C#         | Purple   |
-| React      | Sky Blue |
-| Firebase   | Orange   |
-| JavaScript | Yellow   |
-| TypeScript | Blue     |
-| Kotlin     | Pink     |
-| Java       | Red      |
-| Python     | Indigo   |
-| Rust       | Orange   |
-| Go         | Cyan     |
-| Vue        | Green    |
-| Svelte     | Rose     |
-
-Unknown tags automatically use the default style.
-
----
-
-## Custom Border Color
-
-Supports any HEX color.
-
-```text
-/api/card?border=%238b5cf6
-```
-
-Examples:
-
-| Color  | HEX       |
-| ------ | --------- |
-| Purple | `#8b5cf6` |
-| Blue   | `#3b82f6` |
-| Green  | `#22c55e` |
-| Red    | `#ef4444` |
-| Orange | `#f97316` |
-
-> Remember to encode `#` as `%23`.
-
----
-
-## Custom Description Color
-
-```text
-/api/card?descColor=%2394a3b8
-```
-
-Examples:
-
-| Color       | HEX       |
-| ----------- | --------- |
-| Slate       | `#64748b` |
-| Light Slate | `#94a3b8` |
-| Amber       | `#f59e0b` |
-| White       | `#ffffff` |
-
----
-
-## Custom Width
-
-Default width is **420px**.
-
-```text
-/api/card?width=600
-```
-
-Examples:
-
-```text
-width=350
-width=420
-width=500
-width=700
+```markdown
+![My Repo](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World&theme=neon)
 ```
 
 ---
 
-## Complete Example
+## Adding Tags
 
-```text
-https://github-card-api-rust.vercel.app/api/card?user=DylasCoding&repo=Multiplayer2D&theme=dark&width=550&tags=Unity,Netcode,C#,Firebase&border=%238b5cf6&descColor=%2394a3b8
+Tags appear as colored pills on the card. Well-known tech tags have predefined colors; any other tag will fall back to a default gray style.
+
+```markdown
+![My Repo](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World&tags=react,typescript,node,docker)
 ```
+
+> **Note:** Some characters must be URL-encoded in query strings:
+> - `c#` → `c%23`
+> - `c++` → `c%2B%2B`
+> - Spaces → `+` or `%20`
+
+### Supported tags with colors
+
+`unity` · `netcode` · `c#` · `react` · `firebase` · `javascript` · `typescript` · `kotlin` · `java` · `python` · `rust` · `go` · `vue` · `svelte` · `dart` · `flutter` · `next` · `node` · `tailwind` · `docker` · `graphql`
+
+Any other tag is valid and will render with a default neutral style.
+
+---
+
+## Examples
+
+### Minimal — just user + repo
+
+```markdown
+![Hello-World](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World)
+```
+
+### With tags and dark theme
+
+```markdown
+![Hello-World](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World&tags=node,javascript&theme=dark)
+```
+
+### With neon theme and custom description
+
+```markdown
+![My Game](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=my-game&tags=unity,c%23&theme=neon&desc=A+top-down+shooter+built+in+Unity)
+```
+
+### Wider card with ocean theme
+
+```markdown
+![My API](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=my-api&tags=go,docker&theme=ocean&width=500)
+```
+
+### Side-by-side cards in a table
+
+```markdown
+| Game Project | Web Project |
+|---|---|
+| [![](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=game&tags=unity,c%23&theme=neon)](https://github.com/octocat/game) | [![](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=web&tags=react,typescript&theme=sky)](https://github.com/octocat/web) |
+```
+
+---
+
+## Accent Color by Language
+
+The sidebar gradient and repo name color are automatically determined by the primary language GitHub reports for your repo — no configuration needed.
+
+| Language | Accent |
+|----------|--------|
+| C# | Purple |
+| JavaScript | Amber |
+| TypeScript | Blue |
+| Python | Indigo |
+| Kotlin | Pink |
+| Java | Red |
+| Rust | Orange |
+| Go | Cyan |
+| Vue | Green |
+| Swift | Orange |
+| Dart | Sky blue |
+| Ruby | Rose |
+| PHP | Violet |
+| C++ | Blue |
+| _(other)_ | Indigo (default) |
 
 ---
 
 ## Notes
 
-* SVG is generated dynamically.
-* Repository description is fetched automatically from GitHub.
-* Repository language is fetched automatically from GitHub.
-* Accent colors are automatically selected based on the repository language.
-* Supports GitHub README, portfolio websites, and project showcases.
+- Description and language are **automatically fetched** from the GitHub API. The `desc` parameter overrides this.
+- Cards are **cached for 1 hour** (`Cache-Control: public, max-age=3600`) to stay within GitHub API rate limits.
+- Description longer than 2 lines is automatically truncated with `…`
+- Tags beyond the 4th are silently ignored.
+- `border` and `descColor` values are raw hex — **do not include `#`**.
+- `user` and `repo` are **case-sensitive** and must match exactly as they appear on GitHub.
+
+### Custom accent color
+
+Override the sidebar and title color with any hex value:
+
+```markdown
+![My Repo](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World&theme=dark&accentFrom=06b6d4&accentTo=0891b2)
+```
+
+Solid accent (no gradient):
+
+```markdown
+![My Repo](https://github-card-api-rust.vercel.app/api/card?user=octocat&repo=Hello-World&theme=dark&accentFrom=f43f5e)
+```
